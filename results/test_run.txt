@@ -1,0 +1,15 @@
+test_atomic_batch (test_research.ResearchTests.test_atomic_batch) ... ok
+test_future_changes_do_not_change_predictors (test_research.ResearchTests.test_future_changes_do_not_change_predictors) ... ok
+test_gap_and_session_windows (test_research.ResearchTests.test_gap_and_session_windows) ... ok
+test_invalid_values (test_research.ResearchTests.test_invalid_values) ... ok
+test_partition_purging (test_research.ResearchTests.test_partition_purging) ... ok
+test_replacement_and_deletion (test_research.ResearchTests.test_replacement_and_deletion) ... ok
+test_sampler_receipt_time (test_research.ResearchTests.test_sampler_receipt_time) ... ok
+test_scaler_and_comparison (test_research.ResearchTests.test_scaler_and_comparison) ... ok
+test_short_main_rejected (test_research.ResearchTests.test_short_main_rejected) ... ok
+test_target_and_imbalance (test_research.ResearchTests.test_target_and_imbalance) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.285s
+
+OK
