@@ -1,0 +1,150 @@
+{
+  "input": "[REDACTED_LOCAL_PATH]",
+  "grid_seconds": 172800,
+  "eligible_rows": 171455,
+  "data_start": "2026-09-25T20:45:38+00:00",
+  "data_end": "2026-09-27T20:45:37+00:00",
+  "versions": {
+    "python": "3.12.5",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scikit_learn": "1.8.0"
+  },
+  "evaluation": {
+    "mode": "pilot",
+    "train_rows": 102670,
+    "validation_rows": 34550,
+    "test_rows": 34215,
+    "validation_start": "2026-09-27T01:33:37.400000+00:00",
+    "test_start": "2026-09-27T11:09:37.200000+00:00",
+    "metrics": {
+      "baseline": {
+        "mse": 1.8604255498947255,
+        "rmse": 1.3639741749368737,
+        "mae": 0.782773626478786
+      },
+      "augmented": {
+        "mse": 1.8410048665174483,
+        "rmse": 1.3568363447805518,
+        "mae": 0.8109116118604819
+      },
+      "zero": {
+        "mse": 1.8586094924383194,
+        "rmse": 1.363308289580284,
+        "mae": 0.7770472206780614
+      }
+    },
+    "selected_alpha": {
+      "baseline": 100,
+      "augmented": 0.01
+    },
+    "interpretation": "Pilot results are exploratory only",
+    "relative_mse_reduction": 0.01043883931736811,
+    "test_days": 1,
+    "paired_day_bootstrap_95pct": null,
+    "bootstrap_note": "Not estimated for pilot or fewer than five test days.",
+    "nonoverlapping_10s_metrics": {
+      "baseline": {
+        "mse": 1.8253271792645045,
+        "rmse": 1.3510466976624105,
+        "mae": 0.7818757461571268
+      },
+      "augmented": {
+        "mse": 1.8023669163132041,
+        "rmse": 1.3425225943399255,
+        "mae": 0.8109484183883804
+      },
+      "zero": {
+        "mse": 1.8282091847792956,
+        "rmse": 1.3521128594830003,
+        "mae": 0.7778395430370417
+      }
+    },
+    "subgroups": {
+      "spread_bps_low": {
+        "training_median": 0.0011899433360598479,
+        "rows": 32506,
+        "metrics": {
+          "baseline": {
+            "mse": 1.7840047245929884,
+            "rmse": 1.3356663971939207,
+            "mae": 0.7621471660074952
+          },
+          "augmented": {
+            "mse": 1.7640267942189207,
+            "rmse": 1.3281667042276435,
+            "mae": 0.7913841407090602
+          },
+          "zero": {
+            "mse": 1.7820283311674234,
+            "rmse": 1.3349263392290316,
+            "mae": 0.7562067972995276
+          }
+        }
+      },
+      "spread_bps_high": {
+        "training_median": 0.0011899433360598479,
+        "rows": 1709,
+        "metrics": {
+          "baseline": {
+            "mse": 3.313986314820575,
+            "rmse": 1.8204357486109128,
+            "mae": 1.1750988014815824
+          },
+          "augmented": {
+            "mse": 3.305164736696464,
+            "rmse": 1.8180112036773766,
+            "mae": 1.1823334826902743
+          },
+          "zero": {
+            "mse": 3.315219924428806,
+            "rmse": 1.8207745397024877,
+            "mae": 1.173442072838751
+          }
+        }
+      },
+      "volatility_60_low": {
+        "training_median": 0.16841359197205186,
+        "rows": 9085,
+        "metrics": {
+          "baseline": {
+            "mse": 0.8414129408532334,
+            "rmse": 0.917285637548759,
+            "mae": 0.4249235255678135
+          },
+          "augmented": {
+            "mse": 0.8277079237331746,
+            "rmse": 0.9097845479745051,
+            "mae": 0.4755415153258233
+          },
+          "zero": {
+            "mse": 0.843677811251218,
+            "rmse": 0.9185193581254659,
+            "mae": 0.41961223278365756
+          }
+        }
+      },
+      "volatility_60_high": {
+        "training_median": 0.16841359197205186,
+        "rows": 25130,
+        "metrics": {
+          "baseline": {
+            "mse": 2.228819085634557,
+            "rmse": 1.492923000571214,
+            "mae": 0.9121436291360159
+          },
+          "augmented": {
+            "mse": 2.2073320740461044,
+            "rmse": 1.4857092831526981,
+            "mae": 0.9321546411886702
+          },
+          "zero": {
+            "mse": 2.225527690750489,
+            "rmse": 1.4918202608727664,
+            "mae": 0.9062671516378965
+          }
+        }
+      }
+    }
+  }
+}
