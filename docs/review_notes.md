@@ -1,16 +1,12 @@
-# Review notes and source audit
+# Source audit and method definitions
 
-## Document requirements
+## Research scope
 
-The supplied guideline, template and submitted statement contained no detected AI-directed instructions. This does not establish any university-wide AI policy. No inbox policy review is claimed here.
+The comparative analysis considers published research addressing related prediction problems. Differences in venue, target horizon and input data limit direct comparisons of reported model performance.
 
-Competitor analysis applies: the guideline defines competitors to include research solving related problems. Compare published methods, not exchanges as if the project were a commercial startup. Include several SWOT assessments and a research business case. Commercial market sizing and customer acquisition are not established requirements for this research capstone.
+## Method definitions
 
-The report must also include market context, initial findings, important code and explicit repository links. Repository publication and genuine pilot findings remain pending. The guideline's MScFE 560 header appears inconsistent with its MScFE 690 content.
-
-## Clarifications to the submitted problem statement
-
-Resting bid and ask quantities are not traded volume. Queue imbalance is (bid quantity - ask quantity)/(bid quantity + ask quantity). The target is 10,000 ln(mid[t+10]/mid[t]). Daily candles cannot reconstruct these measurements. Collection continues after the 48-hour pilot for the main 30-day study. We are collecting public live data, not claiming that historical data have been bought. Software and versions must be frozen after the pilot rather than described as already tested in the submitted statement. The coverage target is 95% valid seconds on at least 24/30 days including at least five test days. Evidence for improvement requires a positive estimate with the whole approximate confidence interval above zero. Independence across daily blocks is an assumption, not an observed fact.
+Resting bid and ask quantities measure displayed depth, not traded volume. Queue imbalance is (bid quantity - ask quantity)/(bid quantity + ask quantity). The target is 10,000 ln(mid[t+10]/mid[t]). Daily candles cannot reconstruct these measurements. The completed 48-hour pilot uses public live data. The planned main study requires a prospectively selected thirty-day UTC window and frozen model specifications. Coverage must reach 95% valid seconds on at least 24/30 days, including at least five test days. The planned positive-result criterion requires the whole approximate confidence interval to exceed zero. Independence across daily blocks is an assumption.
 
 ## Source matrix
 
