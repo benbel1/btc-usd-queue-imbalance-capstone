@@ -1,14 +1,34 @@
 # Coinbase BTC-USD queue imbalance capstone
 
-Group 17831. Initial research implementation, 25 September 2026.
+Group 17831. Completed pilot and research implementation, updated 28 September 2026.
 
 Question: does best-quote queue imbalance improve 10-second log mid-price return forecasts beyond recent returns, volatility, spread and depth?
 
-## Start the pilot now
+## Completed pilot
 
-Use Python 3.12 on a computer with unrestricted access to Coinbase Exchange's public WebSocket. No Coinbase account, API key or trading permission is used. The program never places trades.
+The 48-hour pilot ran from 25 September 2026 20:45:37 UTC to 27 September 20:45:37 UTC. It recorded 2,861,006 messages, 172,800 observation seconds and 172,022 valid seconds (99.55%). Of 171,455 eligible rows, 20 were purged; training, validation and test contained 102,670, 34,550 and 34,215 rows.
 
-On Windows, unzip this package, install Python 3.12 if needed, and double-click `start_pilot.cmd`. Keep the computer powered, awake and connected for 48 hours. Synchronize the system clock first. The script creates a virtual environment, installs dependencies, runs tests, collects and analyzes the pilot. Do not run it from inside the ZIP. Existing output directories are deliberately not overwritten. Rename an old pilot directory before restarting.
+Adding imbalance reduced test MSE from 1.860426 to 1.841005 bps² (1.0439%) but increased MAE from 0.782774 to 0.810912 bps (3.5947%). The zero-return MSE was 1.858609 bps² and MAE 0.777047 bps. One test calendar day is insufficient for the planned daily-block inference. Results are exploratory, not evidence of trading profitability.
+
+See [pilot metrics](results/pilot_summary.json), [coverage](results/pilot_coverage.csv), [descriptive statistics](results/pilot_descriptive_statistics.csv), [distribution figure](results/pilot_distributions.png), and [interruptions](results/PILOT_INTERRUPTION_SUMMARY.md).
+
+The [research handoff ZIP](results/BTC-pilot-research-handoff-20260927T222759Z.zip) contains the pilot evidence and original scripts with machine-specific path strings redacted for publication. The repository root contains the revised portable scripts. Start with its README_RESEARCH_HANDOFF.md. MANIFEST.json records regenerated SHA-256 hashes for the publication copy. The original verified handoff remains preserved privately. Raw feed logs, credentials and environments are excluded. Retain raw logs on the collection host. Historical verification statements refer to their stated times, not the final run status.
+
+## Running a new collection
+
+The completed pilot does not need restarting. Running the launcher starts a NEW collection. Use Python 3.12 and a host with access to Coinbase Exchange's public WebSocket. No Coinbase account, API key or trading permission is used; the program never places trades.
+
+### Portable launcher
+
+Keep `monitor_pilot.py` and `start_pilot.cmd` in the repository root. Install Python 3.12, create and activate a virtual environment, then install `requirements.txt`. On Windows:
+
+```bat
+py -3.12 -m venv .venv
+.venv\Scripts\python -m pip install -r requirements.txt
+start_pilot.cmd --hours 48
+```
+
+The Windows launcher uses `CAPSTONE_PYTHON` if set, then the checkout's `.venv`, otherwise `python` on PATH. It contains no personal paths. The monitor defaults to the directory containing itself, regardless of the terminal's working directory. Use `--project-dir` for a separate checkout and `--data-dir` for a writable output location; quote paths containing spaces. Existing outputs are never reused.
 
 On macOS or Linux:
 
@@ -16,10 +36,10 @@ On macOS or Linux:
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-python -m unittest discover -s tests -v
-python collect.py --hours 48 --out data/pilot
-python analyze.py --input data/pilot/observations.csv --out results/pilot --mode pilot
+python monitor_pilot.py --hours 48
 ```
+
+Use `--hours 0.025` for a 90-second verification. The revised portable supervisor retains the pilot monitoring and analysis logic; the completed pilot used its earlier Windows-specific layout. Python unit tests and local path checks cover the revision; its Windows batch entry point still needs a Windows smoke test. Keep the host powered, awake and online. The supervisor records alerts locally; it is not reboot-persistent and does not send push notifications.
 
 Optional one-minute connectivity check before the full run:
 
@@ -44,7 +64,7 @@ Share `data/pilot/metadata.json`, `data/pilot/observations.csv` and the `results
 - `results/connectivity_check`: actual failed live connection attempt. Its original status `completed` means the process ended, not that data were collected. It contains zero messages and zero valid seconds. The revised collector explicitly returns `failed_no_market_data` with exit code 1 in this case.
 - `docs/review_notes.md`: requirements, source links and method clarifications.
 
-Dependencies are pinned to versions tested with Python 3.12.14 on Linux. Windows launch instructions have not yet been live-tested. Successful unit tests do not establish feed reliability or predictive performance.
+Dependencies are pinned. The completed Windows pilot used Python 3.12.5, NumPy 2.3.5, pandas 2.2.3 and scikit-learn 1.8.0. The earlier failed cloud connectivity attempt is retained as historical evidence; the completed Windows pilot supersedes it for live collection status.
 
 ## Evaluation
 
@@ -56,15 +76,10 @@ Main inference resamples paired daily losses 2,000 times with seed 690. Few test
 
 ## GitHub publication
 
-Private repository: https://github.com/benbel1/btc-usd-queue-imbalance-capstone
+Repository: https://github.com/benbel1/btc-usd-queue-imbalance-capstone
 
-Source, documentation, requirements and small results belong here. `.gitignore` excludes data and environments. Professor access remains pending.
+Source, documentation, requirements and small results belong here. `.gitignore` excludes data and environments. Public visibility allows professor review without an invitation once enabled.
 
-## Three-day sequence
+## Next phase
 
-25 September: start the pilot and publish the repository.
-26 September: inspect coverage and disk usage while collection continues, review the literature and method wording.
-27 September: complete the pilot, run analysis and integrate the actual temporary results.
-28 September: check citations, repository access and the course's exact submission time, then submit.
-
-The 30-day main experiment necessarily follows this literature-review deadline.
+Review the literature report and professor access before submission. Freeze the main study design and deploy and verify a durable cloud collector before beginning a preselected thirty-day UTC window. Cloud deployment remains pending.
