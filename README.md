@@ -49,9 +49,9 @@ python collect.py --hours 0.016667 --out data/smoke
 
 Confirm metadata contains messages and valid_seconds greater than zero. A failed check is not market evidence. Three connection errors without any valid observations stop collection. After an interruption, use a NEW output directory. Current code does not resume an old collection.
 
-## Send back after collection
+## Collection outputs
 
-Share `data/pilot/metadata.json`, `data/pilot/observations.csv` and the `results/pilot` folder. Preserve `raw.jsonl.gz` locally for audit. Raw logs can become large, so check free disk space during the first hour. Do not upload raw data to GitHub until redistribution terms and repository size have been checked.
+Each supervised run writes collection metadata and observations under its `collection` directory and analysis outputs under `results`. Preserve `raw.jsonl.gz` locally for audit. Raw logs can become large, so check free disk space during the first hour. Do not upload raw data to GitHub until redistribution terms and repository size have been checked.
 
 ## Files and evidence
 
@@ -62,7 +62,7 @@ Share `data/pilot/metadata.json`, `data/pilot/observations.csv` and the `results
 - `tests/test_research.py`: ten tests using synthetic fixtures solely to check software behavior.
 - `results/test_run.txt`: passing test transcript from the development environment.
 - `results/connectivity_check`: actual failed live connection attempt. Its original status `completed` means the process ended, not that data were collected. It contains zero messages and zero valid seconds. The revised collector explicitly returns `failed_no_market_data` with exit code 1 in this case.
-- `docs/review_notes.md`: requirements, source links and method clarifications.
+- `docs/review_notes.md`: source audit and method definitions.
 
 Dependencies are pinned. The completed Windows pilot used Python 3.12.5, NumPy 2.3.5, pandas 2.2.3 and scikit-learn 1.8.0. The earlier failed cloud connectivity attempt is retained as historical evidence; the completed Windows pilot supersedes it for live collection status.
 
@@ -78,8 +78,8 @@ Main inference resamples paired daily losses 2,000 times with seed 690. Few test
 
 Repository: https://github.com/benbel1/btc-usd-queue-imbalance-capstone
 
-Source, documentation, requirements and small results belong here. `.gitignore` excludes data and environments. Public visibility allows professor review without an invitation once enabled.
+The repository contains source code, documentation, pinned requirements and pilot results. `.gitignore` excludes new collection data and Python environments.
 
 ## Next phase
 
-Review the literature report and professor access before submission. Freeze the main study design and deploy and verify a durable cloud collector before beginning a preselected thirty-day UTC window. Cloud deployment remains pending.
+The main study will use a prospectively selected thirty-day UTC window with frozen model specifications. A durable cloud collector must be deployed and verified before that collection begins.
