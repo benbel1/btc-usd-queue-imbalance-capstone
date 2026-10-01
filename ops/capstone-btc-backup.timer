@@ -1,0 +1,9 @@
+[Unit]
+Description=Hourly Capstone backup verification
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1h
+Persistent=true
+Unit=capstone-btc-backup.service
+[Install]
+WantedBy=timers.target
