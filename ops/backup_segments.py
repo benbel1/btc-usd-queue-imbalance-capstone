@@ -1,9 +1,19 @@
-"""Immutable closed-segment backups with verified downloads and a 4 GiB cap.
+"""Immutable closed-segment backups with verified downloads and a 10 GiB cap.
 Uses only the VM's bucket-scoped service account; no stored keys.
 Never deletes local or cloud evidence. Backs up incomplete gzip unchanged and
 flags it for review; assembly separately refuses it unless explicitly accepted.
 """
 import argparse,base64,datetime as dt,gzip,hashlib,json,pathlib,urllib.request,urllib.parse,urllib.error,uuid,fcntl
+
+CAP_BYTES=10*1024**3
+WARNING_BYTES=8*1024**3
+
+def enforce_capacity(total,size):
+    if total+size>CAP_BYTES:
+        raise RuntimeError("10 GiB backup cap reached; originals preserved; approval or another backup destination required")
+
+def capacity_warning(total):
+    return total>=WARNING_BYTES
 
 def sha(p):
     h=hashlib.sha256()
@@ -14,7 +24,7 @@ def main():
     ap=argparse.ArgumentParser();ap.add_argument('--data',type=pathlib.Path,required=True);ap.add_argument('--bucket',required=True);a=ap.parse_args()
     lock=(a.data/'backup.lock').open('a');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     stamp=lambda:dt.datetime.now(dt.timezone.utc).isoformat()
-    state={'checked_utc':stamp(),'healthy':False,'verified_files':0}
+    state={'checked_utc':stamp(),'healthy':False,'verified_files':0,'cap_bytes':CAP_BYTES,'warning_bytes':WARNING_BYTES}
     def status():
         tmp=a.data/'backup-status.tmp';tmp.write_text(json.dumps(state,indent=2));tmp.replace(a.data/'backup-status.json')
     token=None
@@ -32,7 +42,7 @@ def main():
             for x in listing.get('items',[]):existing[x['name']]=x
             page=listing.get('nextPageToken');
             if not page:break
-        total=sum(int(x['size']) for x in existing.values());cap=4*1024**3;warnings=[]
+        total=sum(int(x['size']) for x in existing.values());cap=CAP_BYTES;warnings=[]
         for segment in sorted(a.data.glob('segment-*')):
             outcome=segment/'segment-outcome.json'
             if not outcome.exists() and not (segment/'recovery-review.json').exists():continue
@@ -51,7 +61,7 @@ def main():
                 if not p.is_file() or p.name.startswith('backup-'):continue
                 name=str(p.relative_to(a.data));digest=sha(p);size=p.stat().st_size
                 if name not in existing:
-                    if total+size>cap:raise RuntimeError('4 GiB backup cap reached; originals preserved; approval or another backup destination required')
+                    enforce_capacity(total,size)
                     boundary='capstone'+uuid.uuid4().hex
                     metadata=json.dumps({'name':name,'metadata':{'sha256':digest}}).encode()
                     body=b'--'+boundary.encode()+b'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'+metadata+b'\r\n--'+boundary.encode()+b'\r\nContent-Type: application/octet-stream\r\n\r\n'+p.read_bytes()+b'\r\n--'+boundary.encode()+b'--\r\n'
@@ -65,7 +75,7 @@ def main():
                 if h.hexdigest()!=digest:raise RuntimeError('Backup download checksum mismatch: '+name)
                 records.append({'path':name,'sha256':digest,'generation':x['generation'],'bytes':size});state['verified_files']+=1
             marker.write_text(json.dumps({'verified_utc':stamp(),'bucket':a.bucket,'objects':records,'warnings':segment_warnings},indent=2))
-        state.update(healthy=total<3.5*1024**3 and not warnings,reason='integrity_review_needed' if warnings else 'verified' if total<3.5*1024**3 else 'backup_near_4GiB_cap',bucket_bytes=total,cap_bytes=cap,warnings=warnings)
+        state.update(healthy=not capacity_warning(total) and not warnings,reason='integrity_review_needed' if warnings else 'verified' if not capacity_warning(total) else 'backup_near_10GiB_cap',bucket_bytes=total,cap_bytes=cap,warnings=warnings)
     except Exception as exc:state['reason']=str(exc)
     finally:status()
     if not state['healthy']:raise SystemExit(1)
