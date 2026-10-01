@@ -1,0 +1,19 @@
+[Unit]
+Description=Capstone verified immutable segment backups
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=oneshot
+User=chukwumobii
+WorkingDirectory=/home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main
+ExecStart=/home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main/.venv/bin/python -B /home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main/ops/backup_segments.py --data /home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main/data/cloud-study-20261002 --bucket capstone-510318-btc-evidence
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main/data
+MemoryMax=256M
+CPUQuota=20%
+Nice=10
+TimeoutStartSec=1800
+UMask=0077
