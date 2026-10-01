@@ -23,11 +23,11 @@ Application logs rotate at 1 MiB with five backups; journal output is rate limit
 
 ## Backups and cost guard
 
-Uploads use `ifGenerationMatch=0`. Existing objects must have matching size and SHA-256 metadata; every newly accepted file is downloaded and hashed before a local verification marker is written. A serialized uploader caps total bucket objects at 4 GiB and warns at 3.5 GiB. It never deletes local or cloud evidence. The fixed study window, readiness record, exact source hashes and pip freeze were also separately uploaded and download-verified under `run-context/cloud-study-20261002/`.
+Uploads use `ifGenerationMatch=0`. Existing objects must have matching size and SHA-256 metadata; every newly accepted file is downloaded and hashed before a local verification marker is written. A serialized uploader caps total bucket objects at 10 GiB and warns at 8 GiB. It never deletes local or cloud evidence. The fixed study window, readiness record, exact source hashes and pip freeze were also separately uploaded and download-verified under `run-context/cloud-study-20261002/`.
 
 This is an application storage guard, not a Google billing cap. Free allowances are shared according to Google's billing rules. Hourly uploads/listing are intended to fit ordinary free operation quotas. Unexpected retries, other account usage, outbound transfers or prolonged retention may still incur charges. Public IPv4 charges are separate. 
 
-The 900-second check used 1,966,544 bytes across its collection files, projecting 5.27 GiB/30 days. The first one-minute snapshot-heavy check projected much more. Market activity and reconnect snapshots vary, so this is not a capacity guarantee. The 4 GiB backup cap may be reached before study end; resolve the warning before that happens rather than deleting raw evidence. With the cap reached, collection continues on the VM but new backups stop. Review storage requirements before increasing the cap.
+The 900-second check used 1,966,544 bytes across its collection files, projecting 5.27 GiB/30 days. The first one-minute snapshot-heavy check projected much more. Market activity and reconnect snapshots vary, so this is not a capacity guarantee. The updated 10 GiB cap exceeds this projection, but growth is variable; resolve any 8 GiB warning rather than deleting raw evidence. With the cap reached, collection continues on the VM but new backups stop. Review storage requirements before increasing the cap.
 
 ## External monitoring
 
@@ -66,3 +66,5 @@ python ops/assemble_segments.py /evidence/cloud-study-20261002/segment-* --out a
 ```
 
 The assembler checks recorded hashes/counts, validates gzip, rejects duplicates, namespaces sessions by segment, and emits explicit invalid rows for missing seconds over the entire fixed window, including endpoints. It never imputes prices. Unsealed or incomplete evidence requires explicit review and `--allow-incomplete`; the report records that choice and excludes partial CSV tails. Then use the existing feature builder and main-mode analysis unchanged; inspect coverage before interpreting any model metrics.
+
+The backup cap was increased to 10 GiB with an 8 GiB warning on October 1, 2026. This may exceed the shared Free Tier storage allowance; no additional disk or other service is added. The cap is inclusive: an upload reaching exactly 10 GiB is permitted; exceeding it is rejected. Warning begins at exactly 8 GiB.
