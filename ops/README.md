@@ -13,7 +13,7 @@ These helpers add operational supervision, integrity checking and backups withou
 
 ## Prospective study
 
-See `study-window.json`, recorded before main-study outcomes. Window: October 2 00:00 UTC inclusive to November 1 00:00 UTC exclusive. Training October 2–19 (18 days); validation October 20–25 (6); test October 26–31 (6). Require at least 95% valid seconds on at least 24 days, including at least five test days. Heavy analysis belongs on another machine after collection. Do not silently shift the window or alter evaluation rules after seeing outcomes.
+See `study-window.json`, recorded before main-study outcomes. Window: October 2 00:00 UTC inclusive to November 1 00:00 UTC exclusive. Training October 2–19 (18 days); validation October 20–25 (6); test October 26–31 (6). Require at least 95% valid seconds on at least 24 days, including at least five test days. Model analysis runs on a separate machine after collection. The study window and evaluation rules are fixed prospectively.
 
 ## Segment lifecycle and integrity
 
@@ -25,7 +25,7 @@ Application logs rotate at 1 MiB with five backups; journal output is rate limit
 
 Uploads use `ifGenerationMatch=0`. Existing objects must have matching size and SHA-256 metadata; every newly accepted file is downloaded and hashed before a local verification marker is written. A serialized uploader caps total bucket objects at 10 GiB and warns at 8 GiB. It never deletes local or cloud evidence. The fixed study window, readiness record, exact source hashes and pip freeze were also separately uploaded and download-verified under `run-context/cloud-study-20261002/`.
 
-This is an application storage guard, not a Google billing cap. Free allowances are shared according to Google's billing rules. Hourly uploads/listing are intended to fit ordinary free operation quotas. Unexpected retries, other account usage, outbound transfers or prolonged retention may still incur charges. Public IPv4 charges are separate.
+This is an application storage guard, not a Google billing cap. Free allowances are shared according to Google's billing rules. Hourly uploads/listing are intended to fit ordinary free operation quotas. Actual charges depend on usage, transfers, retention and applicable free allowances. Public IPv4 charges are separate.
 
 The 900-second check used 1,966,544 bytes across its collection files, projecting 5.27 GiB/30 days. The first one-minute snapshot-heavy check projected much more. Market activity and reconnect snapshots vary, so this is not a capacity guarantee. The updated 10 GiB cap exceeds this projection, but growth is variable; resolve any 8 GiB warning rather than deleting raw evidence. With the cap reached, collection continues on the VM but new backups stop. Review storage requirements before increasing the cap.
 
@@ -33,7 +33,7 @@ The 900-second check used 1,966,544 bytes across its collection files, projectin
 
 `/healthz` on port 8080 returns only a small health/reason JSON response. Firewall `capstone-allow-uptime-health` permits the 27 Google US uptime-check IPs observed at setup, and only on the existing VM tag. No public data browsing endpoint exists. Revisit Google's checker IP list if the service changes it.
 
-Uptime check `configured BTC freshness check` checks the GCE instance identity from Iowa, Oregon and Virginia every minute; it follows the instance instead of a hardcoded ephemeral address. Alert policy configured for collection failures emails `the configured monitoring recipient` when at least two locations fail for two minutes. Local health fails after valid observations exceed 60 seconds old, when backup status is unhealthy or older than two hours, or when disk space is low. VM/process outages fail the external check even if local monitoring cannot run. Delivery is not instantaneous; allow check interval, condition duration and provider latency.
+The configured BTC freshness check monitors the GCE instance identity from Iowa, Oregon and Virginia every minute; it follows the instance instead of a hardcoded ephemeral address. The collection-failure alert policy emails the configured monitoring recipient when at least two locations fail for two minutes. Local health fails after valid observations exceed 60 seconds old, when backup status is unhealthy or older than two hours, or when disk space is low. VM/process outages fail the external check even if local monitoring cannot run. Delivery is not instantaneous; allow check interval, condition duration and provider latency.
 
 The deliberate initial failure opened an incident at 19:42 UTC and recovered at 19:43:35; notification delivery was verified. All three external locations passed at 19:55:50 after the reboot and address change. At the planned study end the collector exits; treat the resulting offline alert as expected completion, then disable collection monitoring after confirming final backup. No final model analysis is automatic.
 
@@ -44,7 +44,7 @@ The deliberate initial failure opened an incident at 19:42 UTC and recovered at 
 - New `data/cloud-commission-20261001T192619Z`: 900 rows, 899 valid, 15,913 messages, no connection errors; checksum/gzip verified. Peak cgroup memory approximately 41 MiB and CPU approximately 8% of one core during the live check.
 - Ten original research tests and four operational tests passed. Operational tests cover duplicate rejection, gap/session preservation, explicit invalid missing seconds, incomplete gzip rejection/preservation and valid-versus-invalid/partial-line freshness.
 - Graceful restart sealed the interrupted segment and preserved prior sealed-file hashes. Deliberate SIGKILL caused automatic systemd restart into a fresh segment and retained the incomplete gzip with its review marker.
-- Approved VM stop/start attached the scoped identity; boot startup and NTP synchronization verified. Ephemeral IP changed, and all external checks recovered.
+- A VM stop/start attached the scoped identity; boot startup and NTP synchronization verified. Ephemeral IP changed, and all external checks recovered.
 - Suspending the commissioning collector kept its PID alive but produced 101-second stale valid data and HTTP 503. It was resumed before final deployment.
 - Twenty commissioning files and four fixed run-context files were upload/download hash verified. Deliberate crash-damaged evidence was explicitly reported as incomplete, not concealed.
 
@@ -67,7 +67,7 @@ gcloud compute ssh YOUR_SSH_USER@capstone-btc-collector --project=YOUR_PROJECT_I
 sudo systemctl status capstone-btc-collector capstone-btc-backup.timer
 ```
 
-Inspect `health.json`, `backup-status.json`, segment metadata and `service.log` before intervening. Never launch a second manual collector alongside systemd. Never resume an old output directory. The systemd files are installation templates; configure them as described below before use. The service ends at November 1 00:00 UTC; confirm the final sealed segment is backed up and stop the backup timer/alert policy after collection is finished and evidence is secured.
+Inspect `health.json`, `backup-status.json`, segment metadata and `service.log` before intervening. Never launch a second manual collector alongside systemd. Never resume an old output directory. The systemd files are installation templates; configure them as described above before use. The service ends at November 1 00:00 UTC; confirm the final sealed segment is backed up and stop the backup timer/alert policy after collection is finished and evidence is secured.
 
 Assemble only on a separate analysis machine after downloading preserved segments:
 
