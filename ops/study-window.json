@@ -1,0 +1,28 @@
+{
+  "recorded_utc": "2026-10-01T19:48:00.7877322Z",
+  "status": "prospective_window_conditional_on_commissioning_readiness",
+  "start_inclusive": "2026-10-02T00:00:00Z",
+  "end_exclusive": "2026-11-01T00:00:00Z",
+  "training": [
+    "2026-10-02T00:00:00Z",
+    "2026-10-20T00:00:00Z"
+  ],
+  "validation": [
+    "2026-10-20T00:00:00Z",
+    "2026-10-26T00:00:00Z"
+  ],
+  "test": [
+    "2026-10-26T00:00:00Z",
+    "2026-11-01T00:00:00Z"
+  ],
+  "coverage_requirement": {
+    "daily_valid_fraction": 0.95,
+    "minimum_days": 24,
+    "minimum_test_days": 5
+  },
+  "rules": "Unchanged hypothesis, predictors, 10-second log-midprice-return target, causal sampling, same-session 71-point eligibility and chronological label purging.",
+  "scoring": "No main-study scoring during collection. Final heavy analysis on a separate machine.",
+  "commissioning": "All timestamps before the inclusive start are commissioning only. Deliberate restart/crash tests use separate commissioning directories.",
+  "missing_data": "No price imputation or continuity across gaps or session boundaries. Assembly explicitly marks missing grid seconds invalid; duplicate timestamps are rejected.",
+  "readiness": "Record a separate readiness decision after restart, backup and external alert verification. If not ready before start, agree a revised prospective window rather than silently shifting dates."
+}
