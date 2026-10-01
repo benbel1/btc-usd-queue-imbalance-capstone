@@ -30,7 +30,8 @@ class Tail:
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--project',type=pathlib.Path,required=True)
-    ap.add_argument('--data',type=pathlib.Path,required=True);ap.add_argument('--segment-seconds',type=int,default=21600)
+    ap.add_argument('--data',type=pathlib.Path,required=True);ap.add_argument('--segment-seconds',type=int,default=3600)
+    ap.add_argument('--require-backup',action='store_true')
     ap.add_argument('--end',required=True);ap.add_argument('--port',type=int,default=8080)
     ap.add_argument('--min-free-gib',type=float,default=3);a=ap.parse_args()
     end=dt.datetime.fromisoformat(a.end).timestamp();a.data.mkdir(parents=True,exist_ok=True)
@@ -54,7 +55,8 @@ def main():
         if not (d/'segment-outcome.json').exists():
             save(d/'recovery-review.json',{'detected_utc':utc(),'status':'unsealed_after_process_loss','warning':'Preserve raw gzip even if incomplete. Audit before assembly or backup acceptance.'})
     def publish(reason,healthy=False,**kw):
-        state.clear();state.update(updated_utc=utc(),reason=reason,healthy=healthy,**kw);save(a.data/'health.json',state)
+        nonlocal state
+        state=dict(updated_utc=utc(),reason=reason,healthy=healthy,**kw);save(a.data/'health.json',state)
     try:
         while not stop.is_set() and time.time()<end:
             free=shutil.disk_usage(a.data).free
@@ -70,6 +72,11 @@ def main():
             while child.poll() is None:
                 tail.update();now=time.time();age=now-(tail.valid or started);free=shutil.disk_usage(a.data).free
                 reason='disk_space_low' if free<a.min_free_gib*1024**3 else 'stale_valid_observations' if age>60 else 'starting' if tail.valid is None else 'healthy'
+                if reason=='healthy' and a.require_backup:
+                    try:
+                        backup=json.loads((a.data/'backup-status.json').read_text())
+                        if not backup['healthy'] or now-dt.datetime.fromisoformat(backup['checked_utc']).timestamp()>7200:reason='backup_requires_attention'
+                    except (OSError,ValueError,KeyError):reason='backup_status_missing'
                 publish(reason,reason=='healthy',collector_pid=child.pid,segment=name,valid_age_seconds=age,latest_valid_utc=dt.datetime.fromtimestamp(tail.valid,UTC).isoformat() if tail.valid else None,free_bytes=free)
                 if stop.is_set() or free<a.min_free_gib*1024**3 or now>=end:
                     child.send_signal(signal.SIGINT)
@@ -85,4 +92,3 @@ def main():
     finally:server.shutdown()
 
 if __name__=='__main__':main()
-
