@@ -1,3 +1,4 @@
+# Installation template: configure locally before use; see ops/README.md.
 [Unit]
 Description=Capstone verified immutable segment backups
 After=network-online.target
@@ -6,7 +7,7 @@ Wants=network-online.target
 Type=oneshot
 User=capstone
 WorkingDirectory=/opt/capstone-btc
-ExecStart=/opt/capstone-btc/.venv/bin/python -B /opt/capstone-btc/ops/backup_segments.py --data /opt/capstone-btc/data/cloud-study-20261002 --bucket BACKUP_BUCKET
+ExecStart=/opt/capstone-btc/.venv/bin/python -B /opt/capstone-btc/ops/backup_segments.py --data /opt/capstone-btc/data/cloud-study-20261002 --bucket YOUR_BACKUP_BUCKET
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
