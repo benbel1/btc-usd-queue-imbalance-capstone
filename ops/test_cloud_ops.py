@@ -37,4 +37,3 @@ class OpsTests(unittest.TestCase):
             tail.update();self.assertEqual(tail.latest-tail.valid,1)
 
 if __name__=='__main__':unittest.main()
-
