@@ -1,0 +1,19 @@
+[Unit]
+Description=Capstone verified immutable segment backups
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=oneshot
+User=capstone
+WorkingDirectory=/opt/capstone-btc
+ExecStart=/opt/capstone-btc/.venv/bin/python -B /opt/capstone-btc/ops/backup_segments.py --data /opt/capstone-btc/data/cloud-study-20261002 --bucket BACKUP_BUCKET
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/opt/capstone-btc/data
+MemoryMax=256M
+CPUQuota=20%
+Nice=10
+TimeoutStartSec=1800
+UMask=0077
