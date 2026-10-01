@@ -2,14 +2,14 @@
 
 These helpers add operational supervision, integrity checking and backups without changing the hypothesis, predictors, causal sampler, ten-second return target, feature eligibility or evaluation rules. No main-study scoring runs on the collector VM.
 
-## Deployed configuration
+## Collection configuration
 
-- Existing project `PROJECT_ID`, VM `capstone-btc-collector`, zone `us-east1-b`; standard e2-micro and 30 GB Standard Persistent Disk retained. No duplicate VM or extra disk.
-- Linux account `capstone`; project `/opt/capstone-btc`; existing `.venv`.
+- Existing project `YOUR_PROJECT_ID`, VM `capstone-btc-collector`, zone `us-east1-b`; standard e2-micro and 30 GB Standard Persistent Disk retained. No duplicate VM or extra disk.
+- Service examples use a dedicated Linux account `capstone`, installation directory `/opt/capstone-btc`, and its `.venv`. These are generic examples, not a record of the live deployment paths.
 - Collector unit `capstone-btc-collector.service`, enabled at boot; supervisor PID 1519 and collector PID 1522 at commissioning handoff. Collector began `2026-10-01T19:53:38.483943Z`. PIDs will change on hourly segments/restarts.
 - Data: project-relative `data/cloud-study-20261002/segment-*/collection/`. Pre-window rows are commissioning only.
 - Backup unit `capstone-btc-backup.service`, timer `capstone-btc-backup.timer`, hourly and enabled at boot. Closed segments only; maximum ordinary offsite lag can approach two hours depending on segment/timer alignment. Active-segment raw evidence remains only on the VM until sealing.
-- Private Standard bucket `gs://BACKUP_BUCKET`, us-east1, uniform access and public-access prevention. VM identity `BACKUP_SERVICE_ACCOUNT` has bucket-only object creator/viewer roles; no downloadable key, no delete permission or project-wide role.
+- Private Standard bucket `gs://YOUR_BACKUP_BUCKET`, us-east1, uniform access and public-access prevention. VM identity `capstone-backup@YOUR_PROJECT_ID.iam.gserviceaccount.com` has bucket-only object creator/viewer roles; no downloadable key, no delete permission or project-wide role.
 
 ## Prospective study
 
@@ -25,7 +25,7 @@ Application logs rotate at 1 MiB with five backups; journal output is rate limit
 
 Uploads use `ifGenerationMatch=0`. Existing objects must have matching size and SHA-256 metadata; every newly accepted file is downloaded and hashed before a local verification marker is written. A serialized uploader caps total bucket objects at 10 GiB and warns at 8 GiB. It never deletes local or cloud evidence. The fixed study window, readiness record, exact source hashes and pip freeze were also separately uploaded and download-verified under `run-context/cloud-study-20261002/`.
 
-This is an application storage guard, not a Google billing cap. Free allowances are shared according to Google's billing rules. Hourly uploads/listing are intended to fit ordinary free operation quotas. Unexpected retries, other account usage, outbound transfers or prolonged retention may still incur charges. Public IPv4 charges are separate. 
+This is an application storage guard, not a Google billing cap. Free allowances are shared according to Google's billing rules. Hourly uploads/listing are intended to fit ordinary free operation quotas. Unexpected retries, other account usage, outbound transfers or prolonged retention may still incur charges. Public IPv4 charges are separate.
 
 The 900-second check used 1,966,544 bytes across its collection files, projecting 5.27 GiB/30 days. The first one-minute snapshot-heavy check projected much more. Market activity and reconnect snapshots vary, so this is not a capacity guarantee. The updated 10 GiB cap exceeds this projection, but growth is variable; resolve any 8 GiB warning rather than deleting raw evidence. With the cap reached, collection continues on the VM but new backups stop. Review storage requirements before increasing the cap.
 
@@ -33,9 +33,9 @@ The 900-second check used 1,966,544 bytes across its collection files, projectin
 
 `/healthz` on port 8080 returns only a small health/reason JSON response. Firewall `capstone-allow-uptime-health` permits the 27 Google US uptime-check IPs observed at setup, and only on the existing VM tag. No public data browsing endpoint exists. Revisit Google's checker IP list if the service changes it.
 
-Uptime check `UPTIME_CHECK_ID` checks the GCE instance identity from Iowa, Oregon and Virginia every minute; it follows the instance instead of a hardcoded ephemeral address. Alert policy `FAILURE_ALERT_POLICY_ID` emails `COLLECTOR_ALERT_EMAIL` when at least two locations fail for two minutes. Local health fails after valid observations exceed 60 seconds old, when backup status is unhealthy or older than two hours, or when disk space is low. VM/process outages fail the external check even if local monitoring cannot run. Delivery is not instantaneous; allow check interval, condition duration and provider latency.
+Uptime check `configured BTC freshness check` checks the GCE instance identity from Iowa, Oregon and Virginia every minute; it follows the instance instead of a hardcoded ephemeral address. Alert policy configured for collection failures emails `the configured monitoring recipient` when at least two locations fail for two minutes. Local health fails after valid observations exceed 60 seconds old, when backup status is unhealthy or older than two hours, or when disk space is low. VM/process outages fail the external check even if local monitoring cannot run. Delivery is not instantaneous; allow check interval, condition duration and provider latency.
 
-The deliberate initial failure opened an incident at 19:42 UTC and recovered at 19:43:35; email delivery was confirmed. All three external locations passed at 19:55:50 after the reboot and address change. At the planned study end the collector exits; treat the resulting offline alert as expected completion, then disable collection monitoring after confirming final backup. No final model analysis is automatic.
+The deliberate initial failure opened an incident at 19:42 UTC and recovered at 19:43:35; notification delivery was verified. All three external locations passed at 19:55:50 after the reboot and address change. At the planned study end the collector exits; treat the resulting offline alert as expected completion, then disable collection monitoring after confirming final backup. No final model analysis is automatic.
 
 ## Commissioning evidence
 
@@ -48,16 +48,26 @@ The deliberate initial failure opened an incident at 19:42 UTC and recovered at 
 - Suspending the commissioning collector kept its PID alive but produced 101-second stale valid data and HTTP 503. It was resumed before final deployment.
 - Twenty commissioning files and four fixed run-context files were upload/download hash verified. Deliberate crash-damaged evidence was explicitly reported as incomplete, not concealed.
 
+## Configure the service templates
+
+The checked-in units use a generic dedicated service account and installation path. Before installing them on a new host:
+
+1. Create the `capstone` service account, install the project at `/opt/capstone-btc`, and create its Python environment at `.venv`; alternatively, consistently replace `User`, `WorkingDirectory`, `ExecStart` and `ReadWritePaths` with local values.
+2. Ensure the service account can read the code/environment and write the project `data` directory. Keep the existing systemd resource limits and filesystem protections.
+3. Replace `YOUR_BACKUP_BUCKET` in the backup unit with a private bucket accessible to the VM's scoped service identity. Substitute `YOUR_PROJECT_ID` and `YOUR_SSH_USER` in command examples. The SSH login need not be the service account.
+4. Configure notification recipients and actual cloud resource identifiers privately in Google Cloud. Keep personal addresses, account balances and machine-specific paths out of repository documentation.
+5. Review the fixed study window before a new study. Do not overwrite the installed units or restart an active collection merely to adopt these repository examples.
+
 ## Safe operations
 
-Use the VM name and IAP:
+Use the VM name and IAP with your configured SSH login and project ID:
 
 ```sh
-gcloud compute ssh capstone@capstone-btc-collector --project=PROJECT_ID --zone=us-east1-b --tunnel-through-iap
+gcloud compute ssh YOUR_SSH_USER@capstone-btc-collector --project=YOUR_PROJECT_ID --zone=us-east1-b --tunnel-through-iap
 sudo systemctl status capstone-btc-collector capstone-btc-backup.timer
 ```
 
-Inspect `health.json`, `backup-status.json`, segment metadata and `service.log` before intervening. Never launch a second manual collector alongside systemd. Never resume an old output directory. systemd files contain deployment-specific paths; review them before installing elsewhere. The service ends at November 1 00:00 UTC; confirm the final sealed segment is backed up and stop the backup timer/alert policy after collection is finished and evidence is secured.
+Inspect `health.json`, `backup-status.json`, segment metadata and `service.log` before intervening. Never launch a second manual collector alongside systemd. Never resume an old output directory. The systemd files are installation templates; configure them as described below before use. The service ends at November 1 00:00 UTC; confirm the final sealed segment is backed up and stop the backup timer/alert policy after collection is finished and evidence is secured.
 
 Assemble only on a separate analysis machine after downloading preserved segments:
 
@@ -67,8 +77,8 @@ python ops/assemble_segments.py /evidence/cloud-study-20261002/segment-* --out a
 
 The assembler checks recorded hashes/counts, validates gzip, rejects duplicates, namespaces sessions by segment, and emits explicit invalid rows for missing seconds over the entire fixed window, including endpoints. It never imputes prices. Unsealed or incomplete evidence requires explicit review and `--allow-incomplete`; the report records that choice and excludes partial CSV tails. Then use the existing feature builder and main-mode analysis unchanged; inspect coverage before interpreting any model metrics.
 
-The backup cap was increased to 10 GiB with an 8 GiB warning on October 1, 2026. This may exceed the shared Free Tier storage allowance; no additional disk or other service is added. The cap is inclusive: an upload reaching exactly 10 GiB is permitted; exceeding it is rejected. Warning begins at exactly 8 GiB.
+The backup cap is 10 GiB and the warning threshold is 8 GiB. This may exceed the shared Free Tier storage allowance; no additional disk or other service is added. The cap is inclusive: an upload reaching exactly 10 GiB is permitted; exceeding it is rejected. Warning begins at exactly 8 GiB.
 
 ## Positive email confirmations
 
-Google Cloud policy START_CONFIRMATION_POLICY_ID confirms formal-start health during October 2 00:05�00:15 UTC; policy DAILY_CONFIRMATION_POLICY_ID confirms current health daily in that UTC window October 3�31 (the previous evening at 8:05 pm New York). Each requires all three existing external check locations to pass over three minutes, samples under two minutes old, and a further one-minute condition duration. Delivery can be later due to metric ingestion and email latency. Only opening notifications are enabled; there are no recovery or recurring-open reminders for these confirmation policies. Google presents these positive confirmations using its incident email format. If unhealthy in the window, no all-clear is sent; the original failure policy remains independent. Time gates prevent these confirmations after the study ends. These are current-health checks, not daily coverage audits or proof the active segment has been backed up.
+A Google Cloud confirmation policy confirms formal-start health during October 2 00:05–00:15 UTC; a separate confirmation policy confirms current health daily in that UTC window October 3–31 (the previous evening at 8:05 pm New York). Each requires all three existing external check locations to pass over three minutes, samples under two minutes old, and a further one-minute condition duration. Delivery can be later due to metric ingestion and email latency. Only opening notifications are enabled; there are no recovery or recurring-open reminders for these confirmation policies. Google presents these positive confirmations using its incident email format. If unhealthy in the window, no all-clear is sent; the original failure policy remains independent. Time gates prevent these confirmations after the study ends. These are current-health checks, not daily coverage audits or proof the active segment has been backed up.
