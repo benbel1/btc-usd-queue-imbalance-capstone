@@ -1,3 +1,4 @@
+# Installation template: configure locally before use; see ops/README.md.
 [Unit]
 Description=Capstone BTC USD segmented collector
 After=network-online.target
