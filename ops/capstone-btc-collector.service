@@ -1,0 +1,28 @@
+[Unit]
+Description=Capstone BTC USD segmented collector
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+User=chukwumobii
+WorkingDirectory=/home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main
+ExecStart=/home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main/.venv/bin/python -B -u /home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main/ops/cloud_service.py --project /home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main --data /home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main/data/cloud-study-20261002 --segment-seconds 3600 --require-backup --end 2026-11-01T00:00:00+00:00
+Restart=on-failure
+RestartSec=15
+KillMode=mixed
+TimeoutStopSec=75
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/chukwumobii/capstone-install-My66HSLB/btc-usd-queue-imbalance-capstone-main/data
+MemoryMax=256M
+CPUQuota=50%
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+LogRateLimitIntervalSec=30s
+LogRateLimitBurst=100
+[Install]
+WantedBy=multi-user.target
