@@ -69,4 +69,3 @@ def assemble(segments,out,start,end,allow_incomplete=False):
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('segments',nargs='+',type=pathlib.Path);ap.add_argument('--out',type=pathlib.Path,required=True);ap.add_argument('--start',required=True);ap.add_argument('--end',required=True);ap.add_argument('--allow-incomplete',action='store_true');a=ap.parse_args()
     print(json.dumps(assemble(a.segments,a.out,dt.datetime.fromisoformat(a.start),dt.datetime.fromisoformat(a.end),a.allow_incomplete),indent=2))
-
