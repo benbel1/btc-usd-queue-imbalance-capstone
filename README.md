@@ -1,6 +1,10 @@
 # Coinbase BTC-USD queue imbalance capstone
 
-Group 17831. Completed pilot and research implementation, updated 28 September 2026.
+Group 17831. Formal study completed 2 November 2026.
+
+## Formal study results
+
+[Read the formal study results and analysis code](formal-study/). On 505,117 held-out forecasts, queue imbalance reduced ridge MSE by 0.752% but increased MAE by 1.126%. The approximate paired-day 95% interval for MSE improvement was 0.480%–1.300%, based on six UTC days.
 
 Question: does best-quote queue imbalance improve 10-second log mid-price return forecasts beyond recent returns, volatility, spread and depth?
 

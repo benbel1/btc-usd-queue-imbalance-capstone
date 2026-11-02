@@ -1,0 +1,22 @@
+{
+  "actual": {
+    "expected_seconds": 2592000,
+    "valid_seconds": 2586944,
+    "eligible_after_purging": 2524833,
+    "training": 1514810,
+    "validation": 504906,
+    "test": 505117
+  },
+  "required": {
+    "expected_seconds": 2592000,
+    "valid_seconds": 2586944,
+    "eligible_after_purging": 2524833,
+    "training": 1514810,
+    "validation": 504906,
+    "test": 505117
+  },
+  "exact_match": true,
+  "qualified_days": 30,
+  "qualified_test_days": 6,
+  "verified_utc": "2026-11-02T06:40:38.435143+00:00"
+}
