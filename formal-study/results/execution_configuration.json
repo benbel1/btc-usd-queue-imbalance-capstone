@@ -1,0 +1,32 @@
+{
+  "protocol": "Original frozen protocol; source/analyze.py fit_compare called unchanged",
+  "source_sha256": {
+    "analyze.py": "62faeea16f910b8f6ec7af52c06b9aa7f6fefa3f13a5c9657126837bc0f1ad42",
+    "features.py": "0036d6b7345a4a9482754dfac01a95b32cbbfe7423bca682289362a269e55d90"
+  },
+  "window": [
+    "2026-10-02T00:00:00+00:00",
+    "2026-11-01T00:00:00+00:00"
+  ],
+  "boundaries": [
+    "2026-10-20T00:00:00+00:00",
+    "2026-10-26T00:00:00+00:00"
+  ],
+  "bootstrap_seed": 690,
+  "bootstrap_resamples": 2000,
+  "ridge_grid": [
+    0.01,
+    0.1,
+    1,
+    10,
+    100
+  ],
+  "ridge_solver": "auto (unchanged sklearn Ridge default for dense inputs)",
+  "ridge_random_state": null,
+  "threads": 1,
+  "platform": "win32",
+  "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+  "numpy": "2.3.5",
+  "pandas": "2.2.3",
+  "sklearn": "1.8.0"
+}

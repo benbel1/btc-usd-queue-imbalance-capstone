@@ -1,0 +1,18 @@
+{
+  "utc": "2026-11-02T06:50:00.459201+00:00",
+  "saved_prediction_rows": 505117,
+  "first_timestamp": "2026-10-26T00:00:00+00:00",
+  "last_timestamp": "2026-10-31T23:59:49+00:00",
+  "unique_ordered_finite": true,
+  "saved_metrics_reproduced": true,
+  "saved_bootstrap_reproduced": true,
+  "tolerance": "rtol=atol=1e-12 for CSV round-trip floating point",
+  "test_days": 6,
+  "predictions_sha256": "9540e5fc345e8649c5617e62fdeb8fb787fa17bccdeacf55ccec05d2db0f66dd",
+  "warnings": [
+    "Only six test days; day independence assumption limits bootstrap inference",
+    "Frozen training-median low-spread subgroup has zero test rows; not estimable and threshold not changed",
+    "Augmented MAE exceeds baseline and zero-return MAE despite lower MSE",
+    "Leave-one-day-out is exploratory aggregation without refitting"
+  ]
+}

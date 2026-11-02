@@ -1,0 +1,132 @@
+{
+  "reviewed_utc": "2026-11-02T05:52:13.126210+00:00",
+  "scope": "Only these nine exact byte-identified, closed, zero-valid-row failed_no_market_data segments. No other integrity waiver.",
+  "segments": {
+    "segment-20261002T062450715479Z-08ef5717": {
+      "status": "failed_no_market_data",
+      "rows": 101,
+      "valid_rows": 0,
+      "sha256": {
+        "metadata.json": "99e3e57c59e3b845170f6a08244ec60738c3191afb0d03ed5587824d233d59d9",
+        "observations.csv": "c04dd0986c9fb4fedcd28df69426d3c535e1f30c13f00e649fd59fcfbca14e39",
+        "raw.jsonl.gz": "8a92155a7d3d9b0ef5d7dabe42e82d2821e841c3556ddaec986ec9d78b0027d9",
+        "provenance.json": "46fbc02bfb6d8a3e6061ecdcb305e66b5ed1fc71b06525654e5d6dff4f00074c",
+        "segment-outcome.json": "63d026b61585242c8ae639e29417e02d8b33e9f3b1dacce9625efe86395dafe9"
+      },
+      "raw_feed_records": 6,
+      "raw_error_records": 3
+    },
+    "segment-20261002T062657202805Z-9ea6ea0d": {
+      "status": "failed_no_market_data",
+      "rows": 88,
+      "valid_rows": 0,
+      "sha256": {
+        "metadata.json": "b07685bbb80206d8ac202d7bd1d50da17bf80e2868dfb791b017a23177239a71",
+        "observations.csv": "a048153e715d9a3bab40a1974fca25b26defb7d14134dca156ae4242119bedb4",
+        "raw.jsonl.gz": "c67034a86f93abecdbc1084d5839e623fb126e3d1cb2f751ff5ae73eecf09506",
+        "provenance.json": "9f356d448d2ef802e51701e6014b1756fa5b67e4a5cfbfbb4335b9b381b7fac2",
+        "segment-outcome.json": "2789900ca421b68a91ce9d6c901d60f3311ae1cad84048b47dfb071fcbd78b27"
+      },
+      "raw_feed_records": 5,
+      "raw_error_records": 3
+    },
+    "segment-20261002T062850715732Z-43c78e84": {
+      "status": "failed_no_market_data",
+      "rows": 62,
+      "valid_rows": 0,
+      "sha256": {
+        "metadata.json": "ee0b2799314ddde7a89cc3717beb699cbce2b90c0765eca0a774d99f5a469b88",
+        "observations.csv": "ff4df39a9c0252a9994473c7ee1716e07b4184833226d9992ab9f5e4068e3d37",
+        "raw.jsonl.gz": "b93bcfefb01f3fb4e2d5854c9ec4ee0bf43a31ca71f30d8d3eef3833d6da3a0f",
+        "provenance.json": "a7fc791e597b2f5d8cb24a420af614d877fe0f2f10276ba48a6f9250321f5047",
+        "segment-outcome.json": "31ced79817c12e82249c5c3127aa49ee42c658e2ae875d9f05f69d4ce4dea64c"
+      },
+      "raw_feed_records": 4,
+      "raw_error_records": 3
+    },
+    "segment-20261002T063021463398Z-ed290652": {
+      "status": "failed_no_market_data",
+      "rows": 87,
+      "valid_rows": 0,
+      "sha256": {
+        "metadata.json": "4ada07285c74c3ba7523798f267f5d404c7f853b02740af772e5472dddbb99ea",
+        "observations.csv": "9a75e808379bc6af8631469e19a5e1d67419dd56c5fbf3c91a996e46d010d89e",
+        "raw.jsonl.gz": "04662d7280c578e712a9d3a85b44115c6fd754ec8fb1646f3bcc2bc661ae8ed7",
+        "provenance.json": "f4ca7f810c1ea8cf29d542878de5ce671b06a8c5249d022e0759a22706157cb5",
+        "segment-outcome.json": "0b821b34beb9469348a0a59d0f1dce175f5179db334227184b685d45204a3f2b"
+      },
+      "raw_feed_records": 6,
+      "raw_error_records": 3
+    },
+    "segment-20261002T063218982104Z-c1cad36c": {
+      "status": "failed_no_market_data",
+      "rows": 79,
+      "valid_rows": 0,
+      "sha256": {
+        "metadata.json": "d5a0925a4103f24599f89c996a69eb829845e852e5cc280c3a3e2dc4476894d1",
+        "observations.csv": "7b697652f0e2c8816f9b35366dd39c9d03f2592ef7ad4c4295011a27ce1791af",
+        "raw.jsonl.gz": "8f6bbef3f30e395d87b761b3cad6acdbf2c8e09542aa836575765c83c833bd73",
+        "provenance.json": "b722f0185a4398ed70811263d7934e43ec7f95ff484b88b5467589229fe53b8d",
+        "segment-outcome.json": "8e94dfc114b66394e73559f47053961412ede844b58716feb982199454cee70b"
+      },
+      "raw_feed_records": 6,
+      "raw_error_records": 3
+    },
+    "segment-20261002T063400992104Z-6e5d1e25": {
+      "status": "failed_no_market_data",
+      "rows": 102,
+      "valid_rows": 0,
+      "sha256": {
+        "metadata.json": "bace95b7d966cfe84daadd6729ce20081db135d5a48a1f02c1b42f5d83dfe245",
+        "observations.csv": "c962efff0f59218a99e72fe36857af6db34661b9d150447b4f327a4cb4c66575",
+        "raw.jsonl.gz": "6d0d1455b54061ae96fdbebc1a26534915941e0daf37a53d5ca215987b2a89c7",
+        "provenance.json": "d10db2ecbed6db42b6f0479bcf95c75da2a1526f9189ba375bad52f5204b245f",
+        "segment-outcome.json": "ecef8981ceb1fc2292824528e0a08173513361cb30cc92c5a57602fda2fe8cde"
+      },
+      "raw_feed_records": 6,
+      "raw_error_records": 3
+    },
+    "segment-20261002T063609226750Z-0ed48b3a": {
+      "status": "failed_no_market_data",
+      "rows": 88,
+      "valid_rows": 0,
+      "sha256": {
+        "metadata.json": "2c0247ed1d594127c02ee14713081aa4b06ed5e72221767d7f35e929add26d3b",
+        "observations.csv": "cc3c53a6588ffd04f6a2619108e64362a57547fa1c3dcaadf8bac83757389d47",
+        "raw.jsonl.gz": "7e1504ffe3b90585640900cc8bed3bdb2a9dd6495f98207ed084d2663190ec75",
+        "provenance.json": "d554ad0972daca0580e954052b8a788e4eee45d26002c2f09104c8cd2be9e1db",
+        "segment-outcome.json": "8059a18f3314714e183ba1b6063189ce4c5c5b4a2be71d46268340201720ed51"
+      },
+      "raw_feed_records": 5,
+      "raw_error_records": 3
+    },
+    "segment-20261002T063805486048Z-879424c5": {
+      "status": "failed_no_market_data",
+      "rows": 69,
+      "valid_rows": 0,
+      "sha256": {
+        "metadata.json": "1d3fba6cfb4d7499b2ffe79c35796743cdefbfce82bb04b4ac040bd457b16673",
+        "observations.csv": "a478545a98ca6b2d3eb2840cb387de05e99f48f2df43525c0c5476ad6dfbd863",
+        "raw.jsonl.gz": "e89883e25376578c3ac2ec69863e074c948620758cf511adfad189d4d53cb604",
+        "provenance.json": "87f641fad35ce8f2e897702a489da017811ec7f514fe93a63a8629002c9b7050",
+        "segment-outcome.json": "8403afdc681dbf976b0489a9c57ffe5db59187aa604fbd142f142061a80f3f38"
+      },
+      "raw_feed_records": 4,
+      "raw_error_records": 3
+    },
+    "segment-20261002T064038529509Z-0dcca425": {
+      "status": "failed_no_market_data",
+      "rows": 72,
+      "valid_rows": 0,
+      "sha256": {
+        "metadata.json": "c994fd3f40315191eaa586b6d4873152e8a8dcb4b66eecb473618cf290330b58",
+        "observations.csv": "05579d19d0d3e0119b202106490dc5825926b66a3e7279fa78636e8bd3c2977b",
+        "raw.jsonl.gz": "4a5c6ea23166c9265ae8f9b45f79296d24488f0fa8e2a518987f44f96921d5f4",
+        "provenance.json": "abb3ff538b78e2c4382acc7e3be19cd39506e91d6fd7570e301213879453eba6",
+        "segment-outcome.json": "a2595113becd5220b1557e595d7a284d1a881dd0e8c19c2a08a3c9237ba767e0"
+      },
+      "raw_feed_records": 5,
+      "raw_error_records": 3
+    }
+  }
+}
