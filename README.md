@@ -84,6 +84,8 @@ Repository: https://github.com/benbel1/btc-usd-queue-imbalance-capstone
 
 The repository contains source code, documentation, pinned requirements and pilot results. `.gitignore` excludes new collection data and Python environments.
 
-## Next phase
+## Completed formal study and supporting materials
 
-The main study will use a prospectively selected thirty-day UTC window with frozen model specifications. A durable cloud collector must be deployed and verified before that collection begins.
+The prospectively selected study window ended on 1 November 2026 at 00:00 UTC. Collection is complete. The formal analysis and the subsequent descriptive return-size decomposition are available in [formal-study](formal-study/).
+
+See the [Solution Design Document](docs/SOLUTION_DESIGN.md) for the project specifications and the role of each code component. The [return-size run instructions](formal-study/#return-size-decomposition) explain how to reproduce the final report's band-loss tables from the preserved predictions without fitting models again.

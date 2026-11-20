@@ -1,0 +1,20 @@
+{
+  "verification_date": "2026-11-20",
+  "classification": "Retrospective explanatory analysis; no refitting or tuning",
+  "rows": 505117,
+  "rerun_csv_byte_identical": true,
+  "files": {
+    "script": {
+      "name": "return_size.py",
+      "sha256": "5224d38e04a7eb4fe9e1e02fdf149d4da7380d48737fbe5f672ec0948fccac5d"
+    },
+    "input_predictions": {
+      "name": "held_out_predictions.csv",
+      "sha256": "9540e5fc345e8649c5617e62fdeb8fb787fa17bccdeacf55ccec05d2db0f66dd"
+    },
+    "output": {
+      "name": "return_size.csv",
+      "sha256": "dfa5939b5951b73da7544a1a1425c13aad4e6f3cf98e081eb3d9f9f86a275184"
+    }
+  }
+}
