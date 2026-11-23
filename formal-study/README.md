@@ -17,7 +17,7 @@ Adding imbalance lowered MSE by 0.752% but increased MAE. The approximate paired
 - [Reviewed segment assembler](source/ops/assemble_reviewed.py) · [Feature and target definitions](source/features.py) · [Ridge comparison and bootstrap](source/analyze.py)
 - [Feature preparation](run_frozen_analysis.py) · [Formal fit from checkpoint](resume_frozen_analysis.py) · [Runtime configuration and source hashes](results/execution_configuration.json)
 
-The execution scripts record the Windows analysis workflow. Replaying the fit requires the separately preserved study inputs and checkpoint layout. The nine hash-pinned zero-valid exceptions preserve invalid rows and gaps. The original evidence archive retains full predictions, logs, figures and file hashes.
+The execution scripts record the Windows analysis workflow. Replaying the fit requires the separately preserved study inputs and checkpoint layout. The nine hash-pinned zero-valid exceptions preserve invalid rows and gaps. The original evidence archive retains full predictions, logs, figures and file hashes. The complete held-out predictions are also included here as a compressed CSV split into 27 binary parts for reproducing the return-size tables.
 
 ## Return-size decomposition
 
@@ -32,15 +32,20 @@ From the repository root, create a Python 3.12 virtual environment using the roo
 ```bash
 python -m pip install -r requirements.txt
 python -m unittest discover -s tests -v
-python formal-study/return_size.py "/path/to/held_out_predictions.csv" "/path/to/new-return-size.csv"
+python formal-study/restore_predictions.py
+python formal-study/return_size.py formal-study/results/held_out_predictions.csv.gz reproduced-return-size.csv
 ```
 
 Use normal Python, without the `-O` flag: the archived script uses assertions to check inputs and loss reconciliation. Choose a new output filename; this script overwrites the supplied output path.
 
-Input: `results/held_out_predictions.csv` from the preserved formal-results archive, with columns `timestamp,target,baseline,augmented,zero`. Targets and predictions are in basis points. Use the complete file, not a sample. It is not included in this repository; obtain the study archive from the project authors for reproduction. The code's fixed row-count check intentionally applies to this study only.
+Input: `held_out_predictions.csv.gz` (reassembled from [prediction-parts](results/prediction-parts)), containing all 505,117 rows from `results/held_out_predictions.csv` in the preserved formal-results archive. pandas reads the gzip file directly; no extraction or new collection is needed. The script uses columns `timestamp,target,baseline,augmented,zero`. Targets and predictions are in basis points. The original additional columns are preserved. Use the complete file, not a sample. The code's fixed row-count check intentionally applies to this study only.
+
+[Archive verification](results/prediction_archive_verification.json) records the compressed and uncompressed SHA-256 hashes and the reproduction check. The uncompressed hash matches the input recorded in the original [return-size verification](results/return_size_verification.json). This prediction file supports retrospective analysis; it does not contain the training inputs or feature checkpoints needed to rerun the formal model fit.
 
 The published script is byte-identical to the script used for the report. On 20 November 2026 it was rerun on the saved predictions; its CSV matched the previously generated file byte for byte. [Verification hashes](results/return_size_verification.json) identify the input, script and output.
 
 The contribution columns are weighted baseline-minus-augmented losses (or zero-minus-augmented for `vs_zero`). Sum contributions across bands to recover the corresponding whole-sample loss difference. They are not percentages. Band membership uses future realised returns and cannot select a forecast at decision time.
 
 The frozen formal fitting scripts remain unchanged. Their Windows memory checks and preserved-input requirements still apply; the new decomposition script itself uses portable file-path arguments.
+
+The prediction archive is stored in 27 parts to support reliable uploads. Run `python formal-study/restore_predictions.py` from the repository root to reconstruct it and verify its SHA-256 before analysis.
