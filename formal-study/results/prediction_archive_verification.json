@@ -1,0 +1,35 @@
+{
+  "verification_date": "2026-11-23",
+  "source_archive": "BTC-formal-results-20261102T065126Z.zip",
+  "source_member": "results/held_out_predictions.csv",
+  "rows": 505117,
+  "columns": [
+    "timestamp",
+    "target",
+    "spread_bps",
+    "volatility_60",
+    "baseline",
+    "augmented",
+    "zero",
+    "baseline_loss",
+    "augmented_loss"
+  ],
+  "compressed_file": {
+    "name": "held_out_predictions.csv.gz",
+    "size_bytes": 27896294,
+    "sha256": "ddc2bcb1eba2fbf8704a7def5faf09ae3a01edec81f87e8d673f1d3507292677"
+  },
+  "uncompressed_file": {
+    "name": "held_out_predictions.csv",
+    "size_bytes": 85027687,
+    "sha256": "9540e5fc345e8649c5617e62fdeb8fb787fa17bccdeacf55ccec05d2db0f66dd"
+  },
+  "matches_original_input_hash": true,
+  "reproduction": {
+    "script": "formal-study/return_size.py",
+    "script_sha256": "5224d38e04a7eb4fe9e1e02fdf149d4da7380d48737fbe5f672ec0948fccac5d",
+    "output_sha256": "dfa5939b5951b73da7544a1a1425c13aad4e6f3cf98e081eb3d9f9f86a275184",
+    "matches_published_csv_byte_for_byte": true
+  },
+  "scope": "Saved held-out predictions only; no refitting or tuning. Original CSV bytes and all columns preserved."
+}

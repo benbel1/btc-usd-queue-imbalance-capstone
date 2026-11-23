@@ -88,4 +88,6 @@ The repository contains source code, documentation, pinned requirements and pilo
 
 The prospectively selected study window ended on 1 November 2026 at 00:00 UTC. Collection is complete. The formal analysis and the subsequent descriptive return-size decomposition are available in [formal-study](formal-study/).
 
-See the [Solution Design Document](docs/SOLUTION_DESIGN.md) for the project specifications and the role of each code component. The [return-size run instructions](formal-study/#return-size-decomposition) explain how to reproduce the final report's band-loss tables from the preserved predictions without fitting models again.
+See the [Solution Design Document](docs/SOLUTION_DESIGN.md) for the project specifications and the role of each code component. The [return-size run instructions](formal-study/#return-size-decomposition) explain how to reproduce the final report's band-loss tables from the complete compressed predictions included in the repository, without fitting models again.
+
+The prediction archive is stored in 27 parts to support reliable uploads. Run `python formal-study/restore_predictions.py` from the repository root to reconstruct it and verify its SHA-256 before analysis.
